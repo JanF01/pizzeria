@@ -21,7 +21,6 @@ class FormController extends AbstractController
      */
     public function index(Request $request)
     {
-       $ifc=false;
        $pizza = new DddMenuPizza();
        
        $pizza->setGroupid(13);
@@ -41,15 +40,14 @@ class FormController extends AbstractController
            $entityManager->persist($pizza);
            $entityManager->flush($pizza);
 
-           $this->addFlash('notice',"Gratulacje! Twoja Pizza została dodana");
+           //Dodanie Informacji o dodaniu pizzy do zmiennej aplikacji App.Flashes
+           $this->addFlash('success',"Gratulacje! Twoja Pizza została dodana");
 
-        $ifc=true;
        }
        
 
         return $this->render('form/index.html.twig', [
             'form' => $form->createView(),
-            'ifc' => $ifc
         ]);
     }
 }

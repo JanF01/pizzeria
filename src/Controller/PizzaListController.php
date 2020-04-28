@@ -21,7 +21,7 @@ class PizzaListController extends AbstractController
         $repo = $this->getDoctrine()->getRepository(DddMenuPizza::class);
 
         $pizzas = $repo->findAll();
-        $direction=0;
+        $direction = 0;
         $szukaj = 'empty';
 
 
@@ -44,16 +44,12 @@ class PizzaListController extends AbstractController
         $szukaj=$search;
  
 
+        //Stworzona dodatkowa metoda w DddMenuPizzaRepository z wymaganym Sortowaniem i wyszukiwaniem SQL za pomocą QueryBuilder
         $pizzas = $repo->findBySearch($search,$sort,$direction);
 
-            if(!$direction){
-        $direction=1;
-            }
-            else{
-                $direction=0;
-            }
-        
+        (!$direction)?$direction=1:$direction=0;
 
+        
         return $this->render("pizza_list/index.html.twig",[
             'pizzas' => $pizzas,
             'direction' => $direction,
@@ -107,9 +103,8 @@ class PizzaListController extends AbstractController
  
             $entityManager->flush($pizza);
  
-            $this->addFlash('notice',"Gratulacje! Pizza została zmodyfikowana");
+            $this->addFlash('success',"Gratulacje! Pizza została zmodyfikowana");
  
-         $ifc=true;
         }
 
         return $this->render('form/modify.html.twig', [

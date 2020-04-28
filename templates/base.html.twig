@@ -46,6 +46,13 @@
 <p>{{ message }}</p>
 </div>
 {% endfor %}
+{% for message in app.flashes('success') %}
+<div class="alert alert-success" role="alert"> 
+<h4 class="alert-heading">Sukces</h4>
+<hr>
+<p>{{ message }}</p>
+</div>
+{% endfor %}
 </div>
 
 {% block body %}{% endblock %}
