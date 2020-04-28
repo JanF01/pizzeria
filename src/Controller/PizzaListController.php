@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use App\Form\PizzaFormType;
 use App\Entity\DddMenuPizza;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -75,6 +77,46 @@ class PizzaListController extends AbstractController
         $entityManager->remove($pizza);
         $entityManager->flush($pizza);
         
+        $this->addFlash('notice',"Pizza została usunięta z bazy");
+
+        return $this->redirectToRoute('pizza_show');
+     }
+
+      /**
+     * @Route("/modify/{id}/", name="pizza_modify")
+     * 
+     * 
+     * @param Request $request
+     * 
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+
+    public function modify(int $id, Request $request){
+        $repo = $this->getDoctrine()->getRepository(DddMenuPizza::class);
+
+        $pizza = $repo->findOneBy(['id'=>$id],['id'=>'ASC']);
+
+        
+        $form = $this->createForm(PizzaFormType::class,$pizza);
+        $form->handleRequest($request);
+        
+ 
+        if($form->isSubmitted() && $form->isValid()){
+      
+            $entityManager = $this->getDoctrine()->getManager();
+ 
+            $entityManager->flush($pizza);
+ 
+            $this->addFlash('notice',"Gratulacje! Pizza została zmodyfikowana");
+ 
+         $ifc=true;
+        }
+
+        return $this->render('form/modify.html.twig', [
+            'form' => $form->createView(),
+        ]);
+
+
         $this->addFlash('notice',"Pizza została usunięta z bazy");
 
         return $this->redirectToRoute('pizza_show');

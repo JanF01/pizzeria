@@ -71,8 +71,8 @@ class PizzaFormType extends AbstractType{
         'create',
         SubmitType::class,
         [
-            'attr' => ['class' => 'form-control btn-primary pull-right'],
-            'label' => 'Dodaj!'
+            'attr' => ['class' => 'form-control btn-primary'],
+            'label' => 'Zapisz!'
         ]
         );
 
